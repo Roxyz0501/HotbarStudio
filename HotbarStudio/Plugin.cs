@@ -89,7 +89,7 @@ public sealed class Plugin : IDalamudPlugin
                 if (changes.Count == 0) return;
                 game.Check(owner, editor.Guards);
                 game.Check(owner, changes);
-                string? command = changes.Count == 1 ? game.WholeCopyCommand(changes[0], editor.Bars) : null;
+                string? command = changes.Count == 1 && !editor.RequiresLocalWrites ? game.WholeCopyCommand(changes[0], editor.Bars) : null;
                 transaction = Guid.NewGuid().ToString("N");
                 journalPath = Path.Combine(pi.GetPluginConfigDirectory(), "history", DateTime.UtcNow.ToString("yyyy-MM-dd"), transaction + ".jsonl");
                 Journal(new { Event = "prepared", Id = transaction, Character = owner, TimeUtc = DateTime.UtcNow, Changes = changes, Command = command });
@@ -217,6 +217,7 @@ public sealed class Plugin : IDalamudPlugin
     private void DrawEditor()
     {
         ImGui.TextWrapped(T("Help"));
+        if (source.Pvp != target.Pvp) ImGui.TextWrapped(T("CrossModeHelp"));
         if (!game.Ready) { ImGui.TextWrapped(T("NotReady")); return; }
         ImGui.BeginDisabled(pending != null || requestApply || uncertain);
         if (ImGui.RadioButton(T("Copy"), !move)) move = false; ImGui.SameLine();

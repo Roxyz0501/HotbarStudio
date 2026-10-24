@@ -13,3 +13,7 @@
 - ZIP: 53,761 bytes; SHA-256 `64702E37C704240EB6022CBB6B3F63825E1DA70A7BC604D86DBB84A4BF60D435`; five allowlisted files. Anonymous download hash matches local package.
 - Repository and Release HTTP 200; IconUrl HTTP 200, image/png. Packaged manifest retains author, version, API15, RepoUrl and IconUrl.
 - GitHub connector used for source, shared index and publication records; CLI used only for unsupported repository creation and Release/assets. No game data or installed DLL changed. Live-game verification is still outstanding.
+
+## 1.0.0.1 update preparation
+
+PvE/PvP local transfer implemented, preserving exact IDs without a PvE skill filter. Release build and 476 managed / 2,496 native UI checks pass. Publication verification pending.

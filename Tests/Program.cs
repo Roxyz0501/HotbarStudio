@@ -32,12 +32,25 @@ foreach (bool pvp in new[] { false, true }) foreach (bool cross in new[] { false
     e.Undo(); e.Transfer(a, 0, a, 1, true); Check(e.View(a)[0].IsEmpty && e.View(a)[1].Id == 100, "Same bar overlapping slot move");
     e.Undo(); e.Transfer(a, -1, a, -1, true); Check(e.Changes.Count == 0, "Self move is no-op");
     var other = a with { Pvp = !pvp }; e.Load(other, Values(count, 600));
-    Throws(() => e.Transfer(a, 0, other, 0, false), "ModeMismatch");
+    e.Transfer(a, 0, other, 0, false);
+    Check(e.View(other)[0] == e.View(a)[0] && e.RequiresLocalWrites, "Cross-mode copy preserves exact slot and forces local route");
+    e.Undo();
+    e.Transfer(a, -1, other, -1, true);
+    Check(e.View(a).All(s => s.IsEmpty) && e.View(other)[0].Id == 100, "Cross-mode whole move");
+    var crossChanges = e.Changes;
+    var crossMem = new Dictionary<Bar, Slot[]> { [a] = Values(count, 100), [other] = Values(count, 600) };
+    int crossSaves = 0;
+    BatchApplier.Apply(crossChanges, bar => crossMem[bar].ToArray(), (bar, i, s) => crossMem[bar][i] = s, () => crossSaves++);
+    Check(crossSaves == 1 && crossMem[a].All(s => s.IsEmpty) && crossMem[other][0].Id == 100, "Cross-mode apply one local save");
+    crossMem[a] = Values(count, 100); crossMem[other] = Values(count, 600);
+    Throws(() => BatchApplier.Apply(crossChanges, bar => crossMem[bar].ToArray(), (_, _, _) => {}, () => {}), "VerifyFailed");
+    Check(crossMem[a][0].Id == 100, "Cross-mode failed destination preserves source");
+    e.Undo();
     var shape = a with { Cross = !cross }; e.Load(shape, Values(shape.Count, 700));
     Throws(() => e.Transfer(a, -1, shape, -1, false), "SizeMismatch");
     e.Transfer(a, 0, shape, shape.Count - 1, false); Check(e.View(shape)[^1].Id == 100, "Cross-kind single slot");
     Throws(() => e.Transfer(a, count, b, 0, false), "Invalid");
-    e.Reset(); Check(e.Changes.Count == 0 && !e.Bars.Any(), "Reset clears staged data");
+    e.Reset(); Check(e.Changes.Count == 0 && !e.Bars.Any() && !e.RequiresLocalWrites, "Reset clears staged data and route");
 }
 var root = Path.Combine(AppContext.BaseDirectory, "fixtures", Guid.NewGuid().ToString("N")); Directory.CreateDirectory(root);
 string path = Path.Combine(root, "config.json");

@@ -3,8 +3,8 @@
 ## Results
 
 - Release build: .NET 10, Dalamud SDK/API 15; zero warnings/errors. NuGet restore/audit retried with approved network access and succeeded.
-- 460 managed assertions: normal/cross and PvE/PvP editing, single/whole copy/move, same-slot no-op, undo, cross-type single slot, bounds, snapshot isolation, concurrent-game-change refusal, failed destination preserving source, no retry, localization completeness and persistence.
-- 2,432 native-ImGui/glyph/production-flow assertions: seven language renders, all localized glyphs across four CJK font faces, real drag/drop acceptance, staged move, apply and journal, successful command verification, timeout without local fallback or retry. Synthetic hotbar provider; no game was attached. Dynamic action-name glyph additions use a bounded cache; this runtime atlas rebuild has not been game-tested.
+- 476 managed assertions: normal/cross and PvE/PvP editing, single/whole copy/move, same-slot no-op, undo, cross-type single slot, bounds, snapshot isolation, concurrent-game-change refusal, failed destination preserving source, no retry, localization completeness and persistence.
+- 2,496 native-ImGui/glyph/production-flow assertions: seven language renders, all localized glyphs across four CJK font faces, real drag/drop acceptance, staged move, apply and journal, successful command verification, timeout without local fallback or retry. Synthetic hotbar provider; no game was attached. Dynamic action-name glyph additions use a bounded cache; this runtime atlas rebuild has not been game-tested.
 - UI renders inspected in Japanese for normal and cross layouts. Harness icons are numbered placeholders; production loads game textures using their icon IDs. No screen control or foreground window was used.
 - Canonical StandardPluginTabs is byte-identical to the project template.
 
@@ -20,7 +20,7 @@
 
 No custom packet creation/sending, sockets, action execution or macro execution code is present. Built-in chat commands are limited to generated hotbar copy/set/general commands with validated sheet-derived names. Local fallback changes exact saved hotbar slots, refreshes live slots where applicable, and calls the game user-file save API once per changed batch. Shared flags are not toggled. Inactive jobs and inactive PvP/PvE groups remain local saved data.
 
-Whole-bar transfer across normal/cross types is rejected because their slot counts differ. PvE/PvP cross-mode transfer is rejected. Unknown/transient slot types, invalid PvP job groups, combat/zoning and stale snapshots are rejected.
+Whole-bar transfer across normal/cross types is rejected because their slot counts differ. PvE/PvP cross-mode transfer uses local storage only; IDs are preserved and are not converted to other-mode actions. Unknown/transient slot types, invalid PvP job groups, combat/zoning and stale snapshots are rejected.
 
 ## Unverified
 
@@ -29,3 +29,7 @@ Actual game execution, native hotbar address/function behavior for the installed
 ## Provenance
 
 FFXIVClientStructs SDK APIs and upstream source documentation were consulted; local shared persistence/font and software ImGui renderer patterns were reused from Command Atlas (Roxyz0501, MIT). No other plugin repository was cloned. Original icon is reproducible with make-icon.ps1.
+
+## 1.0.0.1 regression checks
+
+Normal and cross bars, both transfer directions, exact-ID preservation, whole-bar moves, destination failure without source deletion and one local save per batch pass. The production UI/apply harness keeps its command provider enabled while running cross-mode transfers and asserts that neither command planning nor command sending is invoked. Same-mode command copy success/timeout behavior still passes. User withdrew the requested PvE-skill exclusion; no such filter is implemented. Cross-mode notice was rendered and inspected. API/storage backend unchanged; live-game execution remains unverified.

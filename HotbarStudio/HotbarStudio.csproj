@@ -1,7 +1,7 @@
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
  <PropertyGroup>
   <TargetFramework>net10.0-windows</TargetFramework><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings><AllowUnsafeBlocks>true</AllowUnsafeBlocks><PlatformTarget>x64</PlatformTarget>
-  <Version>1.0.0.0</Version><Authors>Roxyz0501</Authors><PackageLicenseExpression>MIT</PackageLicenseExpression>
+  <Version>1.0.0.1</Version><Authors>Roxyz0501</Authors><PackageLicenseExpression>MIT</PackageLicenseExpression>
   <RepoUrl>https://github.com/Roxyz0501/HotbarStudio</RepoUrl><IconUrl>https://raw.githubusercontent.com/Roxyz0501/HotbarStudio/main/HotbarStudio/images/icon.png</IconUrl>
   <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile><AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>

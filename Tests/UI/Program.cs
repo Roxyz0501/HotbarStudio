@@ -61,6 +61,20 @@ unsafe class Program
     Check(game.Sent==2 && editor.Changes.Count==1,"Failed command retains preview without fallback or retry");
     for(int i=0;i<10;i++) Invoke("Update",new object?[]{null});
     Check(game.Sent==2,"Uncertain command never retried");
+    Invoke("Reset"); game.CommandSuccess = true;
+    foreach(bool cross in new[]{false,true}) foreach(bool moving in new[]{false,true})
+    {
+        var pve = new Bar(false,19,cross,4); var pvp = new Bar(true,0,cross,4);
+        Set("source",pve); Set("target",pvp); Frame(); Frame();
+        var expected = game.Read(pve);
+        int sentBefore = game.Sent, routesBefore = game.CommandRequests;
+        Invoke("Transfer",pve,-1,pvp,-1,moving);
+        Set("fontsDirty",false); Set("requestApply",true); Invoke("Update",new object?[]{null});
+        Check(editor.Changes.Count==0 && game.Read(pvp).SequenceEqual(expected),"PvE to PvP exact destination verified");
+        Check(game.Sent==sentBefore && game.CommandRequests==routesBefore,"Cross-mode never calls command planner or sender");
+        Check(!moving || game.Read(pve).All(s=>s.IsEmpty),"Cross-mode source cleared after destination");
+    }
+    Frame(); Frame(); Renderer.Render(ImGui.GetDrawData(),textures,Path.Combine(output,"cross-mode.bmp"));
     settings.Dispose(); fonts.Dispose(); ImGui.DestroyContext(); foreach(var pin in Dummy.Pins) pin.Free();
     Console.WriteLine($"PASS {checks} glyph, rendering and production-flow checks.");
  }
@@ -69,14 +83,14 @@ internal sealed class FakeGame : IGameBars
 {
  public ulong Identity => 123;
  public bool Ready => true;
- public int Reads,Writes,Sent;
+ public int Reads,Writes,Sent,CommandRequests;
  public bool CommandMode,CommandSuccess;
  private Change? commandChange;
  private readonly Dictionary<Bar,Slot[]> bars=[];
  public Slot[] Read(Bar b) { Reads++; if(!bars.TryGetValue(b,out var s)) bars[b]=s=Enumerable.Range(0,b.Count).Select(i=>new Slot(1,(uint)(100+b.Job*10+i))).ToArray(); return s.ToArray(); }
  public void Check(ulong owner,IReadOnlyList<Change> changes) { foreach(var c in changes) if(!Read(c.Bar).SequenceEqual(c.Before)) throw new InvalidOperationException("Conflict"); }
  public void ApplyLocal(ulong owner,IReadOnlyList<Change> changes) => BatchApplier.Apply(changes,Read,(b,i,s)=>{bars[b][i]=s;Writes++;},()=>{});
- public string? WholeCopyCommand(Change target,IEnumerable<Bar> sources) { commandChange=target; return CommandMode?"/crosshotbar copy PLD 1 share 2":null; }
+ public string? WholeCopyCommand(Change target,IEnumerable<Bar> sources) { CommandRequests++; commandChange=target; return CommandMode?"/crosshotbar copy PLD 1 share 2":null; }
  public void Send(string command) { Sent++; if(CommandSuccess && commandChange is {} c) bars[c.Bar]=c.After.ToArray(); }
  public (string Name,uint Icon) Describe(Slot slot)=>("Action "+slot.Id,0);
 }

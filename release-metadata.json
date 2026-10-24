@@ -1,8 +1,8 @@
 {
-  "version": "1.0.0.0",
+  "version": "1.0.0.1",
   "api": 15,
-  "bytes": 53761,
-  "sha256": "64702E37C704240EB6022CBB6B3F63825E1DA70A7BC604D86DBB84A4BF60D435",
+  "bytes": 55312,
+  "sha256": "8FCFBC51D21D0664FC302DAC6BCCAB73BA8759E8D6C32C3C7084231A2EEA5B26",
   "files": [
     "HotbarStudio.dll",
     "HotbarStudio.json",
