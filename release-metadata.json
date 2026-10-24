@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0.0",
+  "api": 15,
+  "bytes": 53761,
+  "sha256": "64702E37C704240EB6022CBB6B3F63825E1DA70A7BC604D86DBB84A4BF60D435",
+  "files": [
+    "HotbarStudio.dll",
+    "HotbarStudio.json",
+    "images/icon.png",
+    "LICENSE",
+    "NOTICE"
+  ]
+}

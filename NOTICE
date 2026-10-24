@@ -1,0 +1,11 @@
+Hotbar Studio is an original plugin by Roxyz0501 (MIT).
+Uses Dalamud (goatcorp, https://github.com/goatcorp/Dalamud, AGPL-3.0) as a host-provided plugin SDK.
+Uses FFXIVClientStructs public structures and local user-file/hotbar APIs
+(aers and contributors, https://github.com/aers/FFXIVClientStructs, MIT).
+Uses Lumina and Lumina.Excel as host-provided game data libraries.
+These dependencies are provided by Dalamud and are not bundled in the release archive.
+No third-party or game artwork is included in the original plugin icon.
+In-game action icons are obtained from the installed game through Dalamud's texture provider.
+The persistence implementation and native UI test renderer adapt shared project code
+from Command Atlas by Roxyz0501 (MIT); no upstream plugin repository was cloned.
+Command syntax reference: Square Enix Lodestone text command documentation.
