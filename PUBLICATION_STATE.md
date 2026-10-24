@@ -14,6 +14,13 @@
 - Repository and Release HTTP 200; IconUrl HTTP 200, image/png. Packaged manifest retains author, version, API15, RepoUrl and IconUrl.
 - GitHub connector used for source, shared index and publication records; CLI used only for unsupported repository creation and Release/assets. No game data or installed DLL changed. Live-game verification is still outstanding.
 
-## 1.0.0.1 update preparation
+## 1.0.0.1 published update
 
-PvE/PvP local transfer implemented, preserving exact IDs without a PvE skill filter. Release build and 476 managed / 2,496 native UI checks pass. Publication verification pending.
+PvE/PvP local transfer implemented, preserving exact IDs without a PvE skill filter. Release build and 476 managed / 2,496 native UI checks pass. Published and verified anonymously; ordinary shared main index confirms 1.0.0.1.
+
+- Release: https://github.com/Roxyz0501/HotbarStudio/releases/tag/v1.0.0.1
+- Asset: https://github.com/Roxyz0501/HotbarStudio/releases/download/v1.0.0.1/HotbarStudio-1.0.0.1.zip
+- Source/tag: `3080d4dce7157ef2224fb6d31928779c09d8cc63`.
+- Index: `d77796b3545059cc1bea81de16cd42f46e5cfa67`; all 13 other entries unchanged.
+- ZIP 55,312 bytes; SHA-256 `8FCFBC51D21D0664FC302DAC6BCCAB73BA8759E8D6C32C3C7084231A2EEA5B26`; five allowlisted files. Anonymous ZIP matches local package; repository/release/icon HTTP 200, icon image/png.
+- Cross-mode edits bypass command planning/sending. No PvE-skill filter, ID conversion, custom packet code or action execution added. Native storage backend unchanged. Actual game persistence remains unverified.
