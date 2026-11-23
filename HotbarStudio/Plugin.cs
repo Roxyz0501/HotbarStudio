@@ -23,6 +23,8 @@ public sealed class Plugin : IDalamudPlugin
     private readonly HashSet<string> fontNames = [];
     private bool fontsDirty;
     private readonly CancellationTokenRegistration shutdown, unloading;
+    private static readonly PluginDependency[] Dependencies = [];
+    private readonly StandardPluginInfo info = new(Dependencies);
     private readonly Editor editor = new();
     private readonly Dictionary<Slot, (string Name, uint Icon)> descriptions = [];
     private readonly Dictionary<Bar, string> readErrors = [];
@@ -157,7 +159,8 @@ public sealed class Plugin : IDalamudPlugin
                 }, T("Language"), () => {
                     var code = StandardPluginTabs.DrawLanguageSelector(T("Language"), "", settings.Value.Language!);
                     if (code != null) settings.Edit(c => c.Language = code);
-                }, T("Support"), () => StandardPluginTabs.DrawSupportContent("Hotbar Studio", T("Donate"), "Roxyz0501", "Ko-fi"));
+                }, T("Support"), () => StandardPluginTabs.DrawSupportContent("Hotbar Studio", T("Donate"), "Roxyz0501", "Ko-fi"),
+                    StandardPluginInfo.Title(settings.Value.Language!), Dependencies.Length == 0 ? null : () => info.Draw(pi, settings.Value.Language!));
                 ImGui.EndTabBar();
             }
         }
