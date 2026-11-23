@@ -24,3 +24,11 @@ PvE/PvP local transfer implemented, preserving exact IDs without a PvE skill fil
 - Index: `d77796b3545059cc1bea81de16cd42f46e5cfa67`; all 13 other entries unchanged.
 - ZIP 55,312 bytes; SHA-256 `8FCFBC51D21D0664FC302DAC6BCCAB73BA8759E8D6C32C3C7084231A2EEA5B26`; five allowlisted files. Anonymous ZIP matches local package; repository/release/icon HTTP 200, icon image/png.
 - Cross-mode edits bypass command planning/sending. No PvE-skill filter, ID conversion, custom packet code or action execution added. Native storage backend unchanged. Actual game persistence remains unverified.
+
+## 1.0.0.2 — common dependency information
+
+- Published Release: https://github.com/Roxyz0501/HotbarStudio/releases/tag/v1.0.0.2
+- Source: f08ee1cfcbf1c2be6002d51b5ed33566d3b1d2d5. Index: 52a5f63f0ca54d2409e1182895994d335165727b; concurrent entries preserved after fresh reads.
+- Canonical StandardPluginInfo.cs and StandardPluginTabs.cs included unchanged. External dependency definitions are empty; null draw callback fully hides the Information tab. Existing tabs preserved.
+- Release build zero warnings/errors; 2496 native UI/glyph/flow checks passed. Test harness emitted MSB3246 for wildcard native assembly references. Live game unverified.
+- ZIP 60826 bytes; SHA256 5960A2AD85D67E02996D173DFF66813D72492BE22B2402EC965D6FB65E3350E2. Anonymous ZIP hash matched; public repository HTTP200, icon image/png.
